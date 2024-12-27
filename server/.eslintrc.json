@@ -2,9 +2,15 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "tsconfig.json",
-    "tsconfigRootDir": "",
+    "tsconfigRootDir": "server",
     "sourceType": "module"
   },
+  "prettier/prettier": [
+  "error",
+  {
+    "endOfLine": "auto"
+  }
+],
   "plugins": [
     "@typescript-eslint/eslint-plugin"
   ],
