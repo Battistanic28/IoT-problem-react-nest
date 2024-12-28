@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { io, Socket } from "socket.io-client";
 import StreamingDataChart from './components/StreamingChart';
 import StreamingDataGrid from './components/DataGrid';
@@ -14,23 +14,39 @@ type DataPoint = {
 };
 
 function App() {
-  const socketUrl = 'ws://localhost:5000'
-  const socket: Socket = io(socketUrl, {
-    autoConnect: false
-  })
-  const [ isConnected, setIsConnected ] = useState(socket.connected)
+  const [ socket, setSocket ] = useState<Socket>()
+  const [ isConnected, setIsConnected ] = useState(socket?.connected)
   const [ eventHistory, setEventHistory ] = useState<DataPoint[]>([]);
+  
+  // Handle connection
+  useEffect(() => {
+    const socketUrl = 'ws://localhost:5000'
+    const currentSocket: Socket = io(socketUrl, {
+      autoConnect: false
+    })
+    setSocket(currentSocket)
+  },[])
+  
+  // Handle changes to socket state
+  useEffect(() => {    
+    socket?.on('randomNumber', (data: DataPoint) => {
+      setEventHistory((prevEventHistory) => [...prevEventHistory, data]);
+    })
+  },[socket])
 
   const connect = () => {
     if (!isConnected) {
-      socket.connect();
+      socket?.connect();
       setIsConnected(true)
     }
   }
 
-  socket.on('randomNumber', (data: DataPoint) => {
-    setEventHistory((prevEventHistory) => [...prevEventHistory, data]);
-  })
+  const disconnect = () => {
+    if (isConnected) {
+      socket?.disconnect();
+      setIsConnected(false)
+    }
+  }
 
   return (
     <div className="App">
@@ -48,7 +64,7 @@ function App() {
           </Button>
           <Button 
             sx={{margin:'.5rem'}}
-            onClick={connect}
+            onClick={disconnect}
             variant="contained"
             disabled={!isConnected}
             color="warning">

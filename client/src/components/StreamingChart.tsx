@@ -13,8 +13,6 @@ type ChartProps = {
 }
 
 const StreamingDataChart = ({data}: ChartProps) => {
-    console.log(data)
-
     const option = {
         xAxis: {
           type: "category",
