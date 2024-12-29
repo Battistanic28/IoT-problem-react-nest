@@ -12,8 +12,13 @@ type GridProps = {
     data: DataPoint[]
 }
 
-export default function StreamingDataGrid({data}: GridProps) {
+export default function StreamingDataHistory({data}: GridProps) {
     const columns: GridColDef<(typeof data)[number]>[] = [
+      { 
+        field: 'id',
+        headerName: 'ID',
+        width: 90 
+      },
       {
         field: 'number',
         headerName: 'Number',

@@ -26,6 +26,11 @@ const StreamingDataChart = ({data}: ChartProps) => {
         },
         yAxis: {
           type: "value",
+          axisLabel: {
+            textStyle: {
+              color: '#FFFFFF'
+            }
+          }
         },
         series: [
           {
@@ -38,10 +43,11 @@ const StreamingDataChart = ({data}: ChartProps) => {
           trigger: "axis",
         },
         title: {
-          text: "Streaming Data Chart",
+          text: "Real-Time Sensor Data",
           textStyle: {
             color: '#FFFFFF'
-            }
+            },
+          left: "center", 
         },
       };
 
